@@ -1,0 +1,23 @@
+{
+    "name": "Car",
+    "rootNamespace": "",
+    "references": [
+        "Settings",
+        "CustomInput",
+        "Gameplay",
+        "DOTween.Modules"
+    ],
+    "includePlatforms": [
+        "Android",
+        "Editor",
+        "iOS"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

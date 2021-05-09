@@ -1,0 +1,14 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/contentModel.xml
+/projectSettingsUpdater.xml
+/.idea.DriftyRaceClone.iml
+/modules.xml
+# Datasource local storage ignored files
+/../../../../../../../:\Unity\Projects\DriftyRaceClone\.idea\.idea.DriftyRaceClone\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+*.xml
