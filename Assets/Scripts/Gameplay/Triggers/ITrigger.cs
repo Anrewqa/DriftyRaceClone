@@ -2,6 +2,7 @@ namespace Gameplay
 {
     public interface ITrigger
     {
-        public TriggerData GetTriggerInfo();
+        public TriggerType TriggerType { get; }
+        public ITriggerData GetTriggerInfo();
     }
 }

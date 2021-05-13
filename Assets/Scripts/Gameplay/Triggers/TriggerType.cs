@@ -7,7 +7,7 @@
         Boost,
         Finish,
         Ramp,
-        Reset,
+        Fall,
         Coin
     }
 }

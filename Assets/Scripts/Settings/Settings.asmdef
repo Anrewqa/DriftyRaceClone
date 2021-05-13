@@ -1,3 +1,20 @@
 {
-	"name": "Settings"
+    "name": "Settings",
+    "rootNamespace": "",
+    "references": [
+        "GUID:c876652977d852e47ab2fc6b7f05807a"
+    ],
+    "includePlatforms": [
+        "Android",
+        "Editor",
+        "iOS"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

@@ -1,16 +1,12 @@
-﻿using UnityEngine;
-
-namespace Gameplay
+﻿namespace Gameplay
 {
-    public class CheckpointTrigger : MonoBehaviour, ITrigger
+    public class CheckpointTrigger : TriggerBase
     {
-        public TriggerData GetTriggerInfo()
+        public override TriggerType TriggerType => TriggerType.Checkpoint;
+        
+        public override ITriggerData GetTriggerInfo()
         {
-            return new TriggerData {TriggerType = TriggerType.Checkpoint};
-        }
-
-        public void RespondToTrigger()
-        {
+            return new CheckpointTriggerData(TriggerType.Checkpoint, transform.position, transform.rotation);
         }
     }
 }

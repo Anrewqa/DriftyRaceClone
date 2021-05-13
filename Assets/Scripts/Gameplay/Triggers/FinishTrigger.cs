@@ -1,18 +1,12 @@
-﻿using UnityEngine;
-
-namespace Gameplay
+﻿namespace Gameplay
 {
     public class FinishTrigger : TriggerBase
     {
-        protected override TriggerType TriggerType { get; } = TriggerType.Finish;
+        public override TriggerType TriggerType => TriggerType.Finish;
 
-        public override TriggerData GetTriggerInfo()
+        public override ITriggerData GetTriggerInfo()
         {
-            return new TriggerData
-            {
-                TriggerType = TriggerType,
-                Vector = Vector3.up
-            };
+            return new FinishTriggerData(TriggerType, transform.forward, transform.up);
         }
     }
 }

@@ -4,6 +4,6 @@ namespace Gameplay
 {
     public class RampTrigger : TriggerBase
     {
-        protected override TriggerType TriggerType { get; } = TriggerType.Ramp;
+        public override TriggerType TriggerType => TriggerType.Ramp;
     }
 }

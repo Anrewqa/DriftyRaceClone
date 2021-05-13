@@ -5,7 +5,8 @@
         "Settings",
         "CustomInput",
         "Gameplay",
-        "DOTween.Modules"
+        "DOTween.Modules",
+        "PlayerData"
     ],
     "includePlatforms": [
         "Android",

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Car
+namespace GameSettings
 {
     [CreateAssetMenu(fileName = "Settings", menuName = "Assets/Settings", order = 0)]
     public class Settings : ScriptableObject
@@ -19,6 +19,9 @@ namespace Car
         [SerializeField] private float _collisionSpeedDrop;
 
         [SerializeField] private float _baseBoostForce;
+
+        [SerializeField] private float _finishBoostForceMultiplier;
+        [SerializeField] private float _rampBoostForceMultiplier;
         
         public float MaxSpeed => _maxSpeed;
         public float Acceleration => _acceleration;
@@ -32,5 +35,9 @@ namespace Car
         public float DeflectionSpeed => _deflectionSpeed;
 
         public float BaseBoostForce => _baseBoostForce;
+
+        public float FinishBoostForceMultiplier => _finishBoostForceMultiplier;
+
+        public float RampBoostForceMultiplier => _rampBoostForceMultiplier;
     }
 }

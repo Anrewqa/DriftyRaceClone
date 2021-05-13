@@ -6,7 +6,7 @@ namespace Gameplay
     {
         [SerializeField] private ParticleSystem _particleSystem;
         
-        protected override TriggerType TriggerType { get; } = TriggerType.Coin;
+        public override TriggerType TriggerType => TriggerType.Coin;
 
         private void OnTriggerEnter(Collider other)
         {

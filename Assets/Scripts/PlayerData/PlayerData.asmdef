@@ -1,0 +1,21 @@
+{
+    "name": "PlayerData",
+    "rootNamespace": "",
+    "references": [
+        "GUID:9d3a20f9207726c41b694ffcad2ce1a0",
+        "GUID:c876652977d852e47ab2fc6b7f05807a"
+    ],
+    "includePlatforms": [
+        "Android",
+        "Editor",
+        "iOS"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

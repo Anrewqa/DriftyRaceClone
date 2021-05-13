@@ -1,4 +1,6 @@
 ﻿using System;
+using Gameplay;
+using GameSettings;
 using UnityEngine;
 
 namespace Car
@@ -52,7 +54,7 @@ namespace Car
         
         public void UpdateData()
         {
-            Speed = Mathf.Lerp(Speed, _settings.MaxSpeed, _settings.Acceleration * Time.deltaTime);
+            Speed = Mathf.MoveTowards(Speed, PlayerDataHolder.Speed, _settings.Acceleration * Time.deltaTime);
             PreviousVelocity = CurrentVelocity;
 
             var relativeAngularSpeed = _settings.AngularSpeed * Time.deltaTime;

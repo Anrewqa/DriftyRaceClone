@@ -4,25 +4,25 @@ using UnityEngine;
 namespace Car
 {
     [Serializable]
-    public class CarMover
+    public class CarMover : ICarMover
     {
-        private CarController _carController;
         private Rigidbody _rigidbody;
+        
+        public ICarController Controller { get; private set; }
 
-        public CarMover(CarController carController)
+        public CarMover(ICarController carController)
         {
-            _carController = carController;
-
-            _rigidbody = _carController.Rigidbody;
+            Controller = carController;
+            _rigidbody = Controller.Rigidbody;
         }
 
-        public void MoveForward()
+        public void Move()
         {
             _rigidbody.angularVelocity = Vector3.zero;
             _rigidbody.velocity = Vector3.zero;
 
-            var moveData = _carController.MoveData;
-            
+            var moveData = Controller.MoveData;
+
             _rigidbody.MovePosition(_rigidbody.position + moveData.CurrentVelocity * moveData.Speed);
         }
     }

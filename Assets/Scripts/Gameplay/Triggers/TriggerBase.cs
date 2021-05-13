@@ -5,15 +5,11 @@ namespace Gameplay
     [RequireComponent(typeof(Collider))]
     public class TriggerBase : MonoBehaviour, ITrigger
     {
-        protected virtual TriggerType TriggerType => TriggerType.Default;
+        public virtual TriggerType TriggerType => TriggerType.Default;
         
-        public virtual TriggerData GetTriggerInfo()
+        public virtual ITriggerData GetTriggerInfo()
         {
-            return new TriggerData
-            {
-                TriggerType = TriggerType,
-                Vector = transform.position,
-            };
+            return new TriggerTypeData(TriggerType);
         }
     }
 }

@@ -1,20 +1,23 @@
 ﻿using System;
 using CustomInput;
 using Gameplay;
+using GameSettings;
 using UnityEngine;
 
 namespace Car
 {
-    public class CarController : MonoBehaviour
+    public class CarController : MonoBehaviour, ICarController
     {
         [SerializeField] private InputController _inputController;
         [SerializeField] private CarCollisionDetector _collisionDetector;
-        [SerializeField] private bool _isManualMovement;
-
-        private CarMover _carMover;
-        private CarRotator _carRotator;
         
-        private CheckpointTracker _checkpointTracker;
+        private bool _isManualMovement;
+        private bool _isGrounded;
+        private bool _inJump;
+        private ICheckpointTracker _checkpointTracker;
+
+        public ICarMover CarMover { get; private set; }
+        public ICarRotator CarRotator { get; private set; }
 
         public Settings Settings { get; private set; }
         public CarMoveData MoveData { get; private set; }
@@ -30,32 +33,44 @@ namespace Car
 
             MoveData = new CarMoveData(Settings, Transform.forward);
             
-            _carMover = new CarMover(this);
-            _carRotator = new CarRotator(this);
+            CarMover = new CarMover(this);
+            CarRotator = new CarRotator(this);
             
             _checkpointTracker = new CheckpointTracker();
             
-            OnCheckpointTriggered(Transform.position);
-        }
-
-        private void Start()
-        {
-            _inputController.TapInput.Tap += OnTap;
+            _checkpointTracker.SaveCheckpoint(Transform.position, Transform.rotation, MoveData.IsMovingRight);
+        
             _collisionDetector.GroundedChange += OnGroundedChanged;
             _collisionDetector.CarCollided += OnCarCollided;
             _collisionDetector.TriggeredSomething += OnTriggeredSomething;
-            
-            
+
+            GameEventsManager.Subscribe(GameEventType.LevelLoaded, OnLevelLoaded);
+            GameEventsManager.Subscribe(GameEventType.RaceStarted, StartManualMovement);
+            GameEventsManager.Subscribe(GameEventType.RaceEnded, StopManualMovement);
+            GameEventsManager.Subscribe(GameEventType.PlayerFall, ResetCar);
         }
-        
+
         private void OnDestroy()
         {
             _inputController.TapInput.Tap -= OnTap;
             _collisionDetector.GroundedChange -= OnGroundedChanged;
             _collisionDetector.CarCollided -= OnCarCollided;
             _collisionDetector.TriggeredSomething -= OnTriggeredSomething;
+            
+            GameEventsManager.Unsubscribe(GameEventType.LevelLoaded, OnLevelLoaded);
+            GameEventsManager.Unsubscribe(GameEventType.RaceStarted, StartManualMovement);
+            GameEventsManager.Unsubscribe(GameEventType.RaceEnded, StopManualMovement);
+            GameEventsManager.Unsubscribe(GameEventType.PlayerFall, ResetCar);
         }
-        
+
+        private void OnLevelLoaded()
+        {
+            Rigidbody.velocity = Vector3.zero;
+            Rigidbody.angularVelocity = Vector3.zero;
+            ResetCar();
+            StopManualMovement();
+        }
+
         private void FixedUpdate()
         {
             if (Input.GetKeyDown(KeyCode.R))
@@ -67,14 +82,30 @@ namespace Car
             {
                 AddForce(1);
             }
-
-            UpdateMovementData();
             
             if (_isManualMovement)
             {
-                _carMover.MoveForward();
-                _carRotator.Rotate();
+                UpdateMovementData();
+                
+                if (_isGrounded)
+                {
+                    CarMover.Move();
+                }
+
+                CarRotator.Rotate();
             }
+        }
+
+        private void StartManualMovement()
+        {
+            _isManualMovement = true;
+            _inputController.TapInput.Tap += OnTap;
+        }
+        
+        private void StopManualMovement()
+        {
+            _isManualMovement = false;
+            _inputController.TapInput.Tap -= OnTap;
         }
         
         private void UpdateMovementData()
@@ -85,11 +116,17 @@ namespace Car
         private void OnTap()
         {
             MoveData.Turn();
+            Debug.Log($"{MoveData.IsMovingRight} OnTap");
         }
         
         private void OnGroundedChanged(bool isGrounded)
         {
-            _isManualMovement = isGrounded;
+            if (_inJump && isGrounded)
+            {
+                StartManualMovement();
+                _inJump = false;
+            }
+            _isGrounded = isGrounded;
         }
 
         private void OnCarCollided()
@@ -97,46 +134,66 @@ namespace Car
             MoveData.DropSpeed();
         }
 
-        private void OnCheckpointTriggered(Vector3 position)
+        private void OnCheckpointTriggered(ITriggerData triggerData)
         {
-            _checkpointTracker.SaveCheckpoint(position, MoveData.IsMovingRight);
+            var data = (CheckpointTriggerData) triggerData;
+            _checkpointTracker.SaveCheckpoint(data.Position, data.Rotation, MoveData.IsMovingRight);
         }
 
         private void ResetCar()
         {
             transform.position = _checkpointTracker.LastCheckpointPosition;
             MoveData.ResetData(_checkpointTracker.WasMovingRight);
+            Debug.Log($"{_checkpointTracker.WasMovingRight} Was moving right");
         }
 
-        private void OnTriggeredSomething(TriggerData triggerData)
+        private void OnTriggeredSomething(ITriggerData triggerData)
         {
-            switch (triggerData.TriggerType)
+            switch (triggerData.Type)
             {
                 case TriggerType.Checkpoint:
-                    OnCheckpointTriggered(triggerData.Vector);
+                    OnCheckpointTriggered(triggerData);
                     break;
                 case TriggerType.Boost:
                     MoveData.BoostSpeed(1);
                     break;
                 case TriggerType.Finish:
-                    _isManualMovement = false;
-                    AddForce(2, triggerData.Vector);
-                    enabled = false;
+                    OnFinishTrigger(triggerData);
                     break;
                 case TriggerType.Ramp:
-                    _isManualMovement = false;
-                    AddForce(1);
+                    StopManualMovement();
+                    _inJump = true;
+                    AddForce(Settings.RampBoostForceMultiplier);
                     break;
                 case TriggerType.Default:
                     break;
-                case TriggerType.Reset:
-                    ResetCar();
+                case TriggerType.Fall:
+                    GameEventsManager.CallEvent(GameEventType.PlayerFall);
                     break;
                 case TriggerType.Coin:
+                    OnTriggerCoin();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private void OnTriggerCoin()
+        {
+            GameEventsManager.CallEvent(GameEventType.CoinObtained);
+            PlayerDataHolder.AddCoins();
+        }
+
+        private void OnFinishTrigger(ITriggerData triggerData)
+        {
+            GameEventsManager.CallEvent(GameEventType.RaceEnded);
+            
+            StopManualMovement();
+            
+            var data = (FinishTriggerData) triggerData;
+            transform.rotation = Quaternion.LookRotation(data.Direction, data.Normal);
+            Rigidbody.velocity = Vector3.zero;
+            AddForce(Settings.FinishBoostForceMultiplier, data.Direction);
         }
 
         private void AddForce(float forceMultiplier, Vector3 direction)
