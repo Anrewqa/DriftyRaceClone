@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speedData:
     UpgradeType: 0
-    BaseValue: 10
-    ValueGrowthPower: 1.025
+    BaseValue: 20
+    ValueGrowthPower: 0.5
     BaseCost: 1
-    CostGrowthPower: 1.2
+    CostGrowthPower: 1.5
   _coinRewardData:
     UpgradeType: 2
     BaseValue: 1
-    ValueGrowthPower: 1.005
+    ValueGrowthPower: 1
     BaseCost: 2
     CostGrowthPower: 1.5

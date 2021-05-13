@@ -3490,6 +3490,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1339757868}
     m_Modifications:
+    - target: {fileID: 1111277903396836823, guid: f58925b1fdda6814f9b4a677729d4ba9, type: 3}
+      propertyPath: m_text
+      value: 56216
+      objectReference: {fileID: 0}
     - target: {fileID: 2646305140324627631, guid: f58925b1fdda6814f9b4a677729d4ba9, type: 3}
       propertyPath: m_Name
       value: Upgrade

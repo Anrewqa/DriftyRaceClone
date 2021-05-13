@@ -40,7 +40,7 @@ namespace Gameplay
         
         public static void SpendCoins(int count)
         {
-            CoinsCount -= CoinReward;
+            CoinsCount -= count;
             PlayerPrefs.SetInt(CoinsCountKey, CoinsCount);
         }
 
@@ -52,12 +52,12 @@ namespace Gameplay
 
         public static void UpdateSpeed()
         {
-            Speed = _settings.SpeedData.BaseValue * Mathf.Pow(SpeedUpgradeIndex, _settings.SpeedData.ValueGrowthPower);
+            Speed = _settings.SpeedData.BaseValue + Mathf.Pow(SpeedUpgradeIndex, _settings.SpeedData.ValueGrowthPower);
         }
 
         public static void UpdateCoinReward()
         {
-            CoinReward = (int) (_settings.CoinRewardData.BaseCost * Mathf.Pow(CoinRewardUpgradeIndex, _settings.CoinRewardData.ValueGrowthPower));
+            CoinReward = (int) (_settings.CoinRewardData.BaseCost + Mathf.Pow(CoinRewardUpgradeIndex, _settings.CoinRewardData.ValueGrowthPower));
         }
 
         public static void UpgradeSpeed()

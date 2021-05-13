@@ -99,6 +99,7 @@ namespace Car
         private void StartManualMovement()
         {
             _isManualMovement = true;
+            _inputController.enabled = true;
             _inputController.TapInput.Tap += OnTap;
         }
         
@@ -178,8 +179,8 @@ namespace Car
 
         private void OnTriggerCoin()
         {
-            GameEventsManager.CallEvent(GameEventType.CoinObtained);
             PlayerDataHolder.AddCoins();
+            GameEventsManager.CallEvent(GameEventType.CoinObtained);
         }
 
         private void OnFinishTrigger(ITriggerData triggerData)

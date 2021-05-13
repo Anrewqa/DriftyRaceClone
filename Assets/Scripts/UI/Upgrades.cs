@@ -99,7 +99,7 @@ namespace UI
         
         private void OnCoinRewardUpgradeViewClicked()
         {
-            var (value, cost) = GetUpgradeData(_upgradesSettings.CoinRewardData, PlayerDataHolder.SpeedUpgradeIndex);
+            var (value, cost) = GetUpgradeData(_upgradesSettings.CoinRewardData, PlayerDataHolder.CoinRewardUpgradeIndex);
             
             PlayerDataHolder.SpendCoins(cost);
             GameEventsManager.CallEvent(GameEventType.CoinSpent);
