@@ -28,8 +28,6 @@ namespace UI
         
         public void OnPointerUp(PointerEventData eventData)
         {
-            Debug.Log($"Pointer up on start screen _isInteractable : {_isInteractable}");
-            
             if (!_isInteractable)
             {
                 return;

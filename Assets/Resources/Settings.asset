@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Settings
   m_EditorClassIdentifier: 
   _maxSpeed: 0.5
-  _acceleration: 0.5
+  _acceleration: 10
   _angularSpeed: 4
   _rotationSpeed: 5
   _deflectionAngle:
@@ -51,7 +51,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   _deflectionSpeed: 90
   _baseBoostSpeed: 0.2
-  _collisionSpeedDrop: 0.3
-  _baseBoostForce: 20000
+  _collisionSpeedDropFactor: 1.5
+  _baseBoostForce: 40000
   _finishBoostForceMultiplier: 1
-  _rampBoostForceMultiplier: 1.65
+  _rampBoostForceMultiplier: 1.6

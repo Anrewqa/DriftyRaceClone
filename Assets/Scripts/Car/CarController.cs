@@ -116,7 +116,6 @@ namespace Car
         private void OnTap()
         {
             MoveData.Turn();
-            Debug.Log($"{MoveData.IsMovingRight} OnTap");
         }
         
         private void OnGroundedChanged(bool isGrounded)
@@ -144,7 +143,6 @@ namespace Car
         {
             transform.position = _checkpointTracker.LastCheckpointPosition;
             MoveData.ResetData(_checkpointTracker.WasMovingRight);
-            Debug.Log($"{_checkpointTracker.WasMovingRight} Was moving right");
         }
 
         private void OnTriggeredSomething(ITriggerData triggerData)

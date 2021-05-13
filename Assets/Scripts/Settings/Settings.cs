@@ -16,7 +16,7 @@ namespace GameSettings
         [SerializeField] private float _deflectionSpeed;
         
         [SerializeField] private float _baseBoostSpeed;
-        [SerializeField] private float _collisionSpeedDrop;
+        [SerializeField] private float _collisionSpeedDropFactor;
 
         [SerializeField] private float _baseBoostForce;
 
@@ -27,7 +27,7 @@ namespace GameSettings
         public float Acceleration => _acceleration;
         public float BaseBoostSpeed => _baseBoostSpeed;
         public float RotationSpeed => _rotationSpeed;
-        public float CollisionSpeedDrop => _collisionSpeedDrop;
+        public float CollisionSpeedDropFactor => _collisionSpeedDropFactor;
         public float AngularSpeed => _angularSpeed;
 
         public AnimationCurve DeflectionAngle => _deflectionAngle;

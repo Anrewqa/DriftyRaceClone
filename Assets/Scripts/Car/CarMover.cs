@@ -22,8 +22,9 @@ namespace Car
             _rigidbody.velocity = Vector3.zero;
 
             var moveData = Controller.MoveData;
+            var speed = moveData.Speed * Time.fixedDeltaTime;
 
-            _rigidbody.MovePosition(_rigidbody.position + moveData.CurrentVelocity * moveData.Speed);
+            _rigidbody.MovePosition(_rigidbody.position + moveData.CurrentVelocity * speed);
         }
     }
 }

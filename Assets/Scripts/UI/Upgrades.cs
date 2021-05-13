@@ -1,3 +1,4 @@
+using System;
 using Gameplay;
 using GameSettings;
 using UnityEngine;
@@ -20,13 +21,18 @@ namespace UI
         {
             var baseValue = upgradeData.BaseValue;
             var valueGrowthPower = upgradeData.ValueGrowthPower;
-            var upgradeValue = (int) (baseValue * Mathf.Exp(valueGrowthPower * index));
+            var upgradeValue =  GetUpgradeParameterData(baseValue, valueGrowthPower, index);
             
             var baseCost = upgradeData.BaseCost;
             var costGrowthPower = upgradeData.CostGrowthPower;
-            var upgradeCost = (int) (baseCost * Mathf.Exp(costGrowthPower * index));
+            var upgradeCost = GetUpgradeParameterData(baseCost, costGrowthPower, index);
 
             return (upgradeValue, upgradeCost);
+        }
+
+        private static int GetUpgradeParameterData(float parameterBase, float growthFactor, int index)
+        {
+            return (int) (parameterBase + Mathf.Pow(index, growthFactor));
         }
         
         [SerializeField] private UpgradeView _speedUpgradeView;
@@ -51,13 +57,18 @@ namespace UI
             _coinRewardUpgradeView.UpgradeClicked -= OnCoinRewardUpgradeViewClicked;
         }
 
+        private void OnEnable()
+        {
+            UpgradeViews();
+        }
+
         private void InitializeSpeedUpgradeView()
         {
             var currentIndex = PlayerDataHolder.SpeedUpgradeIndex;
 
             var (value, cost) = GetUpgradeData(_upgradesSettings.SpeedData, currentIndex);
             
-            _speedUpgradeView.Initialize("Speed", $"{value}", $"{cost}");
+            _speedUpgradeView.Initialize("Max speed", $"{value}", $"{cost}");
             
             var isAvailable = PlayerDataHolder.CoinsCount > cost;
             _speedUpgradeView.UpdateAvailability(isAvailable);

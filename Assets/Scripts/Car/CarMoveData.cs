@@ -49,7 +49,7 @@ namespace Car
         
         public void DropSpeed()
         {
-            Speed -= _settings.CollisionSpeedDrop;
+            Speed /= _settings.CollisionSpeedDropFactor;
         }
         
         public void UpdateData()
